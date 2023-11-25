@@ -1,6 +1,10 @@
+#todo
+#display which index you are using
+#create a selector for choosing an indexes
+#query an index
+
 import streamlit as st
 from src.indexing import *
-
 
 # Set page configuration
 st.set_page_config(layout="wide")
@@ -24,7 +28,7 @@ st.markdown(welcome_text, unsafe_allow_html=True)
 
 if page == "Magic":
     st.write("Here's the Magic page.")
-    load_index(persist_dir="indexes")
+    load_index(persist_dir="./indexes/index")
     st.write("Index is loaded")
 
 elif page == "Indexes":
@@ -35,12 +39,12 @@ elif page == "Indexes":
         kb_name = st.text_input("Knowledgebase name: ", value = "MyIndex")
         kb_folder = st.text_input("Files folder: ", value = "data")
         embed_model = st.text_input("Embed_model: ", value = "local")
-        persist_dir = st.text_input("Index storage location: " , value = "indexes")
+        persist_dir = st.text_input("Index storage location: " , value = "./indexes/index")
 
-        # Every form must have a submit button.
+        # submit button
         submitted = st.form_submit_button("Submit")
         if submitted:
-            lala = load_data(knowledgebase=kb_folder,embed_model=embed_model, persist_dir=persist_dir)
+            index = index_data(knowledgebase=kb_folder,embed_model=embed_model, persist_dir=persist_dir)
             st.write("Knowledgebase name: ", kb_name, "Content folder: ", kb_folder, "Storage directory:" , persist_dir)
 
 # def load_data(knowledgebase = "data", embed_model="local", model="zephyr", temperature=0.2):
