@@ -1,2 +1,5 @@
 .venv/
 .DS_Store
+data/
+data_big/
+indexes/
