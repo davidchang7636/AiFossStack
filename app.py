@@ -1,6 +1,7 @@
 import streamlit as st
 from src.indexing import *
 
+
 # Set page configuration
 st.set_page_config(layout="wide")
 
