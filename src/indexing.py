@@ -11,7 +11,6 @@ def index_data(knowledgebase = "data", embed_model="local", model="zephyr", temp
     service_context = ServiceContext.from_defaults(embed_model=embed_model, llm=Ollama(model=model, temperature=temperature))  #try model="zephyr" for better but slower results.
     index = VectorStoreIndex.from_documents(docs, service_context=service_context)
     index.storage_context.persist(persist_dir=persist_dir)
-    
 
 #Loading an index from disk
 from llama_index import StorageContext, load_index_from_storage
@@ -28,4 +27,4 @@ def list_files(directory = "./indexes/"):
 
 
 # content management 
-welcome_text = "Welcome to your own RAG engine ;)"
+welcome_text = "Welcome"

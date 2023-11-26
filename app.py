@@ -22,36 +22,36 @@ st.markdown(
 with st.sidebar:
     st.markdown('<p class="font">Navigation</p>', unsafe_allow_html=True)
     page = st.radio("Go to", ("Magic", "Indexes", "Models"))
-
-# Main page area
-st.markdown(welcome_text, unsafe_allow_html=True)
-
-if page == "Magic":
+    active_index = st.text_input("Activate this index:  " , value="index")
     st.write("Indexes available: " ,list_files())
-    active_index = st.text_input("Type index you want:  " , value="index")
-
     try:
         st.write("Index is loaded: " , load_index(persist_dir="./indexes/" + active_index))
     except:
         st.write("Please create a new index ")
-    
-    
 
-elif page == "Indexes":
-    st.write("Here's the Indexes page.")
-
+    #Create Knowledgbase
     with st.form("my_form"):
         st.write("Create a new knowledgebase")
         name = st.text_input("Knowledgebase name: ", value = "MyIndex")
         folder = st.text_input("Files folder: ", value = "data")
-        embed_model = st.text_input("Embed_model: ", value = "local")
+        embed_model = st.text_input("Embedding model: ", value = "local")
 
         # submit button
         submitted = st.form_submit_button("Submit")
         if submitted:
             index = index_data(knowledgebase=folder, embed_model=embed_model, index_name=name)
-            # st.write("Created a new index: ", name, "From the content folder: ", folder)
-            st.write("Created a new index: ", name, "From the content folder: ", folder)
+            st.write("Created a new knowledgebase: ", name, "From the content folder: ", folder)
+
+
+# Main page area
+st.markdown(welcome_text, unsafe_allow_html=True)
+
+if page == "Magic":
+    st.write("Here's the Magic page.")
+
+    
+elif page == "Indexes":
+    st.write("Here's the Indexes page.")
 
 
 else:
