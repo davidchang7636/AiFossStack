@@ -1,7 +1,6 @@
 #todo
-#display which index you are using
-#create a selector for choosing an indexes
-#query an index
+#Force RAG with sources
+#Configure the system prompt
 
 import streamlit as st
 from src.indexing import *
@@ -9,52 +8,39 @@ from src.indexing import *
 # Set page configuration
 st.set_page_config(layout="wide")
 
-# Custom CSS to set the sidebar background and font
-st.markdown(
-    """
-    <style>
-    .css-1d391kg {background-color: #007bff;}
-    .font {font-family: 'Font Awesome 6 Free';}
-    </style>
-    """, unsafe_allow_html=True)
-
 # Sidebar with default visibility
 with st.sidebar:
-    st.markdown('<p class="font">Navigation</p>', unsafe_allow_html=True)
-    page = st.radio("Go to", ("Magic", "Indexes", "Models"))
-    active_index = st.text_input("Activate this index:  " , value="index")
-    st.write("Indexes available: " ,list_files())
+    st.markdown('Knowledgebases')
+    active_index = st.text_input("Active:  " , value="index")
+    st.write("Available: " ,list_files())
     try:
-        st.write("Index is loaded: " , load_index(persist_dir="./indexes/" + active_index))
+        base = load_index(persist_dir="./indexes/" + active_index)
+        st.write("Knowledge base loaded")
+        query_engine = base.as_query_engine()
+        st.write("Query base ready")
     except:
-        st.write("Please create a new index ")
+        st.write("Create a new knowledge base ")
 
     #Create Knowledgbase
-    with st.form("my_form"):
-        st.write("Create a new knowledgebase")
-        name = st.text_input("Knowledgebase name: ", value = "MyIndex")
-        folder = st.text_input("Files folder: ", value = "data")
+    with st.form("create_knowledgebase"):
+        st.write("Create new knowledge base")
+        name = st.text_input("Name: ", value = "MyIndex")
+        folder = st.text_input("From folder: ", value = "data")
         embed_model = st.text_input("Embedding model: ", value = "local")
 
         # submit button
-        submitted = st.form_submit_button("Submit")
+        submitted = st.form_submit_button("Create")
         if submitted:
             index = index_data(knowledgebase=folder, embed_model=embed_model, index_name=name)
             st.write("Created a new knowledgebase: ", name, "From the content folder: ", folder)
 
-
 # Main page area
-st.markdown(welcome_text, unsafe_allow_html=True)
+st.markdown(welcome_text)
 
-if page == "Magic":
-    st.write("Here's the Magic page.")
-
-    
-elif page == "Indexes":
-    st.write("Here's the Indexes page.")
-
-
-else:
-    st.write("You are on the Models page.")
-
-# Add other elements as needed
+#Question zone
+with st.form("Question"):
+    question = st.text_input("Question: ", value = "Hello.")
+    submitted = st.form_submit_button("Ask")
+    if submitted:
+        response = query_engine.query(question)
+        st.write(response.response)

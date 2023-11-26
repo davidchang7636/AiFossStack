@@ -18,13 +18,20 @@ def load_index(embed_model="local", model="zephyr", temperature=0.2, persist_dir
     storage_context = StorageContext.from_defaults(persist_dir=persist_dir)
     service_context = ServiceContext.from_defaults(embed_model=embed_model, llm=Ollama(model=model, temperature=temperature))  #try model="zephyr" for better but slower results.
     index = load_index_from_storage(storage_context, service_context=service_context)
-    return persist_dir
+    return index
 
 # listing indexes available
 import os
 def list_files(directory = "./indexes/"):
     return os.listdir(directory)
 
+########## Questions & Answers ######
 
-# content management 
+# Query
+# def query (question , index):
+#     query_engine = index.as_query_engine()
+#     response = query_engine.query(question)
+#     return response
+
+########## content management ########
 welcome_text = "Welcome"
