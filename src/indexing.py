@@ -27,11 +27,7 @@ def list_files(directory = "./indexes/"):
 
 ########## Questions & Answers ######
 
-# Query
-# def query (question , index):
-#     query_engine = index.as_query_engine()
-#     response = query_engine.query(question)
-#     return response
+
 
 ########## content management ########
 welcome_text = "Welcome"

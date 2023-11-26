@@ -1,6 +1,7 @@
 #todo
-#Force RAG with sources
+#Use minimum similarity score
 #Configure the system prompt
+#allow model and temp selection (on settings tab)
 
 import streamlit as st
 from src.indexing import *
@@ -16,7 +17,7 @@ with st.sidebar:
     try:
         base = load_index(persist_dir="./indexes/" + active_index)
         st.write("Knowledge base loaded")
-        query_engine = base.as_query_engine()
+        query_engine = base.as_query_engine(similarity_top_k=4)
         st.write("Query base ready")
     except:
         st.write("Create a new knowledge base ")
@@ -44,3 +45,8 @@ with st.form("Question"):
     if submitted:
         response = query_engine.query(question)
         st.write(response.response)
+        with st.expander("Show References"):
+            for i in range(len(response.source_nodes)):
+                st.write(response.source_nodes[i].metadata)
+            #st.write(response) <-uncomment to see all info return in the response
+
