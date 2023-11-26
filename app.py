@@ -27,27 +27,32 @@ with st.sidebar:
 st.markdown(welcome_text, unsafe_allow_html=True)
 
 if page == "Magic":
-    st.write("Here's the Magic page.")
-    load_index(persist_dir="./indexes/index")
-    st.write("Index is loaded")
+    st.write("Indexes available: " ,list_files())
+    active_index = st.text_input("Type index you want:  " , value="index")
+
+    try:
+        st.write("Index is loaded: " , load_index(persist_dir="./indexes/" + active_index))
+    except:
+        st.write("Please create a new index ")
+    
+    
 
 elif page == "Indexes":
     st.write("Here's the Indexes page.")
 
     with st.form("my_form"):
         st.write("Create a new knowledgebase")
-        kb_name = st.text_input("Knowledgebase name: ", value = "MyIndex")
-        kb_folder = st.text_input("Files folder: ", value = "data")
+        name = st.text_input("Knowledgebase name: ", value = "MyIndex")
+        folder = st.text_input("Files folder: ", value = "data")
         embed_model = st.text_input("Embed_model: ", value = "local")
-        persist_dir = st.text_input("Index storage location: " , value = "./indexes/index")
 
         # submit button
         submitted = st.form_submit_button("Submit")
         if submitted:
-            index = index_data(knowledgebase=kb_folder,embed_model=embed_model, persist_dir=persist_dir)
-            st.write("Knowledgebase name: ", kb_name, "Content folder: ", kb_folder, "Storage directory:" , persist_dir)
+            index = index_data(knowledgebase=folder, embed_model=embed_model, index_name=name)
+            # st.write("Created a new index: ", name, "From the content folder: ", folder)
+            st.write("Created a new index: ", name, "From the content folder: ", folder)
 
-# def load_data(knowledgebase = "data", embed_model="local", model="zephyr", temperature=0.2):
 
 else:
     st.write("You are on the Models page.")
