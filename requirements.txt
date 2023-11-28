@@ -6,3 +6,9 @@ pypdf
 transformers
 torch
 torchvision
+langchain
+sentence-transformers
+unstructured[all-docs]
+gpt4all
+chromadb
+
