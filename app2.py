@@ -26,4 +26,14 @@ with st.sidebar:
         if submitted:
             st.write("Temp: ", temperature, "Model: ", model, "top k: ", top_k, "LLM url", base_url, "Search type: ", search_type, "Active index :", active_index)
 
-        
+#creating an index : wrap these below in a form
+    docs = load_data(input_dir = "./data/") #works
+    st.write("loaded docs" , len(docs))
+
+    chunks = chunking(docs) #works
+    st.write("chunked docs" , len(chunks))
+
+    db = vectorize(chunks, index_name = "totoindex") #works
+    st.write("vectors stored")
+
+#create index selector

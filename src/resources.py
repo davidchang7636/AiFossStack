@@ -29,9 +29,33 @@ chunk_size=1000
 chunk_overlap=200
 persist_directory="./indexes/"   # folder where the vector databases will persist
 
+# finding list of existing indexes
 import os
 def list_indexes():
     return os.listdir("./indexes/")
+
+#Directory loader, including text, pdf
+from langchain.document_loaders import DirectoryLoader
+def load_data(input_dir = "./data/"):
+    fulldocs = DirectoryLoader(input_dir , use_multithreading=True).load()
+    return fulldocs
+
+# split files into chunks
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+def chunking(data, chunk_size=chunk_size, chunk_overlap=chunk_overlap):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    chunks = text_splitter.split_documents(data)
+    return chunks
+
+#Vectorize & store
+from langchain.embeddings import GPT4AllEmbeddings
+from langchain.vectorstores import Chroma
+# index_name = "undocs"
+# vectorstore = Chroma.from_documents(documents=all_splits, embedding=GPT4AllEmbeddings(), persist_directory="./indexes/" + index_name)
+
+def vectorize(documents, index_name = "newindex", persist_directory="./indexes/"):
+    vectorstore = Chroma.from_documents(documents=documents, embedding=GPT4AllEmbeddings(), persist_directory=persist_directory + index_name)
+    return vectorstore
 
 ########### To do in Langchain ############
 
