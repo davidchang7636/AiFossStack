@@ -27,13 +27,23 @@ with st.sidebar:
             st.write("Temp: ", temperature, "Model: ", model, "top k: ", top_k, "LLM url", base_url, "Search type: ", search_type, "Active index :", active_index)
 
 #creating an index : wrap these below in a form
-    docs = load_data(input_dir = "./data/") #works
-    st.write("loaded docs" , len(docs))
+    with st.form("Indexing"):
+        st.write("New index")
+        input_dir = st.text_input("From folder (e.g. ~/data): ", value = input_dir)
+        index_name = st.text_input("Name: ", value = "Newindex")
+        chunk_size = st.number_input('Chunk size' , value = chunk_size)
+        chunk_overlap = st.number_input('Chunk overlap' , value = chunk_overlap)
 
-    chunks = chunking(docs) #works
-    st.write("chunked docs" , len(chunks))
+        # submit button
+        submitted = st.form_submit_button("Create")
+        if submitted:
+            docs = load_data(input_dir = input_dir)
+            st.write("loaded docs" , len(docs))
+            chunks = chunking(docs)
+            st.write("chunked docs" , len(chunks))
+            db = vectorize(chunks, index_name = index_name)
+            st.write("vectors stored")
+            st.write("done! ")
 
-    db = vectorize(chunks, index_name = "totoindex") #works
-    st.write("vectors stored")
-
-#create index selector
+# index selector already created above.
+# Pending: when an index is selected on the picker, load it from disk to memory.

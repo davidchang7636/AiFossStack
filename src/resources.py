@@ -50,9 +50,6 @@ def chunking(data, chunk_size=chunk_size, chunk_overlap=chunk_overlap):
 #Vectorize & store
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.vectorstores import Chroma
-# index_name = "undocs"
-# vectorstore = Chroma.from_documents(documents=all_splits, embedding=GPT4AllEmbeddings(), persist_directory="./indexes/" + index_name)
-
 def vectorize(documents, index_name = "newindex", persist_directory="./indexes/"):
     vectorstore = Chroma.from_documents(documents=documents, embedding=GPT4AllEmbeddings(), persist_directory=persist_directory + index_name)
     return vectorstore
