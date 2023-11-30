@@ -8,7 +8,3 @@
 * $pip install --upgrade pip
 * $pip install -r requirements.txt
 
-
-## todo
-* re-load local vector db
-* Generate text responses using Ollama Local LLM
