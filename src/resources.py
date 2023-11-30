@@ -8,7 +8,8 @@ model="mistral"  #orca-mini , mistral, or zephyr , "mistral-openorca"
 temperature = 0.2
 search_type = "similarity"   # or "mmr"
 top_k = 5
-active_index = "index"
+# active_index = "index"
+default_index = "undocs"
 llm = Ollama(base_url=base_url, model=model, temperature=temperature, callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
 
 system_prompt = '''
@@ -54,25 +55,10 @@ def vectorize(documents, index_name = "newindex", persist_directory="./indexes/"
     vectorstore = Chroma.from_documents(documents=documents, embedding=GPT4AllEmbeddings(), persist_directory=persist_directory + index_name)
     return vectorstore
 
-########### To do in Langchain ############
-
-# # Creating a new index
-# def index_data(knowledgebase = "data", embed_model="local", model="zephyr", temperature=0.2, index_name="newindex"):
-#     persist_dir = "./indexes/" + index_name
-#     reader = SimpleDirectoryReader(input_dir=knowledgebase, recursive=True)
-#     docs = reader.load_data()
-#     service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)  #try model="zephyr" for better but slower results.
-#     index = VectorStoreIndex.from_documents(docs, service_context=service_context)
-#     index.storage_context.persist(persist_dir=persist_dir)
-
-# #Loading an index from disk
-# from llama_index import StorageContext, load_index_from_storage
-# def load_index(embed_model="local", model="zephyr", temperature=0.2, persist_dir="./indexes/index"):
-#     storage_context = StorageContext.from_defaults(persist_dir=persist_dir)
-#     service_context = ServiceContext.from_defaults(llm=llm , embed_model=embed_model)  #try model="zephyr" for better but slower results.
-#     index = load_index_from_storage(storage_context, service_context=service_context)
-#     return index
-
+#Load index from disk
+def load_index(index_name , persist_directory="./indexes/"):
+    index = Chroma(persist_directory=persist_directory + index_name, embedding_function=GPT4AllEmbeddings())
+    return index
 
 
 ########## content management ########
