@@ -13,6 +13,7 @@ default_index = "undocs"
 llm = Ollama(base_url=base_url, model=model, temperature=temperature, callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
 
 #Prompts for templated chain
+default_question = "Can you ...?"
 system_prompt = '''
 You are an expert. Execute the instruction given to you following these criteria:
 * Cite the exact source next to each paragraph.
@@ -62,5 +63,6 @@ def load_index(index_name , persist_directory="./indexes/"):
     return index
 
 
+
 ########## content management ########
-welcome_text = '''# Welcome, I am your expert companion. \n ## I will respond only based on the data sources provided to me.'''
+app_welcome_text = '''# Welcome, I am your text generator. \n ## I will respond only based on the knowledge base selected on the left.'''
