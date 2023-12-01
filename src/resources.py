@@ -65,4 +65,4 @@ def load_index(index_name , persist_directory="./indexes/"):
 
 
 ########## content management ########
-app_welcome_text = '''# Welcome, I am your text generator. \n ## I will respond only based on the knowledge base selected on the left.'''
+app_welcome_text = '''## I will respond only based on the knowledge base selected on the left.'''
