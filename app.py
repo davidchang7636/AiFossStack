@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 from src.resources import *
 
@@ -7,8 +5,10 @@ from src.resources import *
 st.set_page_config(layout="wide")
 
 #Load index
-# db = load_index(index_name = default_index)
-index = load_index(index_name = default_index)
+try:
+    index = load_index(index_name = default_index)
+except:
+    st.write("No initial index")
 
 # Sidebar with default visibility
 with st.sidebar:
@@ -16,7 +16,6 @@ with st.sidebar:
     #Index selector form
     with st.form("Index_Selector"):
         index = load_index(index_name = default_index)
-        # active_index = default_index
         st.write("## Default knowledge base:", default_index)
         selected_index = st.selectbox('Change:',list_indexes())
         #button
@@ -40,7 +39,6 @@ with st.sidebar:
                 st.write("loaded docs" , len(docs))
                 chunks = chunking(docs)
                 st.write("chunked docs" , len(chunks))
-                # db = vectorize(chunks, index_name = index_name)
                 vectorize(chunks, index_name = index_name)
                 st.write("vectors stored")
                 st.write("done! ")

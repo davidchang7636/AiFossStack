@@ -8,8 +8,7 @@ model="mistral"  #orca-mini , mistral, or zephyr , "mistral-openorca"
 temperature = 0.2
 search_type = "similarity"   # or "mmr"
 top_k = 5
-# active_index = "index"
-default_index = "undocs"
+default_index = "index"
 llm = Ollama(base_url=base_url, model=model, temperature=temperature, callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
 
 #Prompts for templated chain
