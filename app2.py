@@ -1,5 +1,4 @@
-#TO DO
-# Use minimum similarity score
+
 
 import streamlit as st
 from src.resources import *
@@ -56,13 +55,43 @@ with st.sidebar:
             st.write("vectors stored")
             st.write("done! ")
 
-# testing index change
-# db = load_index(index_name = default_index)
-query = "umoja"
-docs = index.similarity_search(query)
-st.write(docs)
+#### Testing queryng LLM
+from langchain.prompts import PromptTemplate
+# Build prompt
+QA_CHAIN_PROMPT = PromptTemplate.from_template(template)# Run chain
+
+from langchain.chains import RetrievalQA
+# expose this index in a retriever interface
+retriever = index.as_retriever(search_type="similarity", search_kwargs={"k":5})   #k = 10 gives nice results # can use "mmr" or "similarity"
+
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm, retriever=retriever, return_source_documents=True, chain_type_kwargs={"prompt": QA_CHAIN_PROMPT}
+)
+#st.write("Building template and query chain done! ")
+
+### Testing querying
+
+question = st.text_input("Question: ", value = "What is the UN?")
+result = qa_chain({"query": question})
+# Check the result of the query
+result["result"]
+# Check the source document from where we 
+result["source_documents"][:]
+st.write("query done! ")
+
+
+
+
+
+
+
+# testing
+# query = "umoja"
+# docs = index.similarity_search(query)
+# st.write(docs)
 
 #### NEXT STEPS
-# Pending: when an index is selected on the picker above, load it from disk to memory.
 # create query & response forms
 # create text_input to edit the prompt & template
+
+# Use minimum similarity score

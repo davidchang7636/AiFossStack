@@ -12,6 +12,7 @@ top_k = 5
 default_index = "undocs"
 llm = Ollama(base_url=base_url, model=model, temperature=temperature, callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]))
 
+#Prompts for templated chain
 system_prompt = '''
 You are an expert. Execute the instruction given to you following these criteria:
 * Cite the exact source next to each paragraph.
